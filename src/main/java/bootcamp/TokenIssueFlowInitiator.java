@@ -40,14 +40,17 @@ public class TokenIssueFlowInitiator extends FlowLogic<SignedTransaction> {
          *         TODO 1 - Create our TokenState to represent on-ledger tokens!
          * ===========================================================================*/
         // We create our new TokenState.
-        TokenState tokenState = null;
-
+        TokenState tokenState = new TokenState(issuer, owner, amount);
 
         /* ============================================================================
          *      TODO 3 - Build our token issuance transaction to update the ledger!
          * ===========================================================================*/
         // We build our transaction.
-        TransactionBuilder transactionBuilder = null;
+        TransactionBuilder transactionBuilder = new TransactionBuilder(notary);
+
+        transactionBuilder.addCommand(new TokenContract.Commands.Issue(), issuer.getOwningKey(), owner.getOwningKey());
+
+        transactionBuilder.addOutputState(tokenState, TokenContract.ID);
 
         /* ============================================================================
          *          TODO 2 - Write our TokenContract to control token issuance!
